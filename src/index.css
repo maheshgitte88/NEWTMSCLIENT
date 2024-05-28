@@ -1,0 +1,113 @@
+table tr:hover {
+  background-color: #e0c5c5;
+}
+
+table.selected-table tr.selected-row {
+  background-color: #a7e6a5;
+}
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.image-container.zoomed img {
+  transform: scale(1.2);
+  /* Adjust the scale factor as needed */
+  cursor: zoom-out;
+}
+
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #dddddd;
+  padding: 5px;
+  text-align: left;
+}
+
+/* Style the fixed column */
+.custom-table th:first-child,
+.custom-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #f2f2f2;
+  z-index: 1;
+}
+
+
+
+.ticket-updates-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-update {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin-left: auto;
+  /* Aligns messages to the right by default */
+}
+
+.ticket-update.receiver {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.ticket-update .update-info {
+  background-color: #e5e5ea;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.ticket-update .update-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-update .update-attachments img {
+  max-width: 200px;
+  max-height: 100px;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+.custom-scrollbar {
+  max-height: 100vh;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(221, 124, 60);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
