@@ -141,16 +141,16 @@ const Sidebar = () => {
                 ) : (
                   <>
                     <Link
-                      to="/user/Ticket"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
-                    >
-                      <i className="bi bi-ticket"></i>
-                    </Link>
-                    <Link
                       to="/admin/home"
                       className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
                     >
                       <i className="bi bi-house"></i>
+                    </Link>
+                    <Link
+                      to="/user/Ticket"
+                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
+                    >
+                      <i className="bi bi-ticket"></i>
                     </Link>
                   </>
                 )}

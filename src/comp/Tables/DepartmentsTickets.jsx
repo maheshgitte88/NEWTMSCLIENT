@@ -15,6 +15,7 @@ import Resolution from "./Reply/Resolution";
 import Transferred from "./Reply/Transferred";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import moment from "moment";
 
 function DepartmentsTickets() {
   const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
@@ -24,6 +25,9 @@ function DepartmentsTickets() {
   const [activeTab, setActiveTab] = useState(null);
   const [notificationPermission, setNotificationPermission] =
     useState("default");
+
+  const [timeUpdates, setTimeUpdates] = useState([]);
+
   const [activeTable, setActiveTable] = useState("AdminTickets");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -223,53 +227,89 @@ function DepartmentsTickets() {
   };
   const renderTable = (tickets) => (
     <div className="table-container">
-    <table
-      className={`custom-table ${selectedTicket ? "selected-table" : ""}`}
-    >
-      <thead>
-        <tr>
-          <th>Ticket ID</th>
-          <th>Ticket Type</th>
-          <th>Ticket Query</th>
-          <th>Status</th>
-          <th>Description</th>
-          <th>Resolution Description</th>
-          <th>Close Description</th>
-          <th>Resolution Feedback</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tickets.map((ticket) => (
-          <tr
-            key={ticket.TicketID}
-            onClick={() => handleTicketClick(ticket)}
-            className={`cursor-pointer ${
-              selectedTicket === ticket ? "selected-row" : ""
-            }`}
-          >
-            <td>{ticket.TicketID}</td>
-            <td>{ticket.TicketType}</td>
-            <td>{ticket.TicketQuery}</td>
-            <td>
-              <span className={getStatusClass(ticket.Status)}>
-                {ticket.Status}
-              </span>
-            </td>
-            <td>{ticket.Description}</td>
-            <td>{ticket.ResolutionDescription}</td>
-            <td>{ticket.CloseDescription}</td>
-            <td>{ticket.ResolutionFeedback}</td>
-            <td>{new Date(ticket.createdAt).toLocaleString()}</td>
-            <td>{new Date(ticket.updatedAt).toLocaleString()}</td>
+      <table
+        className={`custom-table ${selectedTicket ? "selected-table" : ""}`}
+      >
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Ticket Type</th>
+            <th>Ticket Query</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Resolution Description</th>
+            <th>Close Description</th>
+            <th>Resolution Feedback</th>
+            <th>Created At</th>
+            <th>Updated At</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {tickets.map((ticket) => (
+            <tr
+              key={ticket.TicketID}
+              onClick={() => handleTicketClick(ticket)}
+              className={`cursor-pointer ${
+                selectedTicket === ticket ? "selected-row" : ""
+              }`}
+            >
+              <td>{ticket.TicketID}</td>
+              <td>{ticket.TicketType}</td>
+              <td>{ticket.TicketQuery}</td>
+              <td>
+                <span className={getStatusClass(ticket.Status)}>
+                  {ticket.Status}
+                </span>
+              </td>
+              <td>{ticket.Description}</td>
+              <td>{ticket.ResolutionDescription}</td>
+              <td>{ticket.CloseDescription}</td>
+              <td>{ticket.ResolutionFeedback}</td>
+              <td>{new Date(ticket.createdAt).toLocaleString()}</td>
+              <td>{new Date(ticket.updatedAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
+  // const formatDateTime = (dateTime) => {
+  //   return moment(dateTime).format('YYYY-MM-DD HH:mm:ss');
+  // };
+
+  const calculateRemainingTimess = (recTime, timeInMinutes) => {
+    const currentTime = moment();
+    const endTime = moment(recTime).add(timeInMinutes, "minutes");
+    const duration = moment.duration(endTime.diff(currentTime));
+    const hours = Math.floor(duration.asHours());
+    const minutes = Math.floor(duration.minutes());
+    const seconds = Math.floor(duration.seconds());
+    const isPast = duration.asMilliseconds() < 0;
+
+    return {
+      remainingTime: `${isPast ? "-" : ""}${Math.abs(hours)
+        .toString()
+        .padStart(2, "0")}:${Math.abs(minutes)
+        .toString()
+        .padStart(2, "0")}:${Math.abs(seconds).toString().padStart(2, "0")}`,
+      isPast,
+    };
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const updates = paginatedTickets.map((ticket) => {
+        const { remainingTime, isPast } = calculateRemainingTimess(
+          ticket.createdAt,
+          ticket.TicketResTimeInMinutes
+        );
+        return { ticketID: ticket.TicketID, remainingTime, isPast };
+      });
+      setTimeUpdates(updates);
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [paginatedTickets]);
   return (
     <>
       <div className="container mx-auto p-1 flex flex-col sm:flex-row text-sm">
@@ -342,44 +382,79 @@ function DepartmentsTickets() {
                       <th>Rec-Time</th>
                       <th>Status</th>
                       <th>UniqueId</th>
-                      <th>category</th>
+                      <th>Category</th>
                       <th>Subcategory</th>
                       <th>Location</th>
                       <th>From</th>
                       <th>Depat</th>
                       <th>Time</th>
+                      <th>Time Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {paginatedTickets.map((ticket) => (
-                      <tr
-                        key={ticket.TicketID}
-                        onClick={() => handleTicketClick(ticket)}
-                        className={`cursor-pointer ${
-                          selectedTicket === ticket ? "selected-row" : ""
-                        }`}
-                      >
-                        <td>{ticket.TicketID}</td>
-                        <td>{ticket.TicketType}</td>
-                        <td>{formatDateTime(ticket.createdAt)}</td>
-                        <td>
-                          <span className={getStatusClass(ticket.Status)}>
-                            {ticket.Status}
-                          </span>
-                        </td>
-                        <td>
-                          {ticket.LeadId
-                            ? ticket.LeadId
-                            : ticket.from_User.user_reg_no}
-                        </td>
-                        <td>{ticket.Querycategory}</td>
-                        <td>{ticket.QuerySubcategory}</td>
-                        <td>{ticket.from_User.location}</td>
-                        <td>{ticket.from_User.user_Name}</td>
-                        <td>{ticket.from_User.Department.DepartmentName}</td>
-                        <td>{ticket.TicketResTimeInMinutes}</td>
-                      </tr>
-                    ))}
+                    {paginatedTickets.map((ticket) => {
+                      // const { remainingTime, isPast } = calculateRemainingTimess(ticket.createdAt, ticket.TicketResTimeInMinutes);
+
+                      const timeUpdate =
+                        timeUpdates.find(
+                          (update) => update.ticketID === ticket.TicketID
+                        ) || {};
+                      const { remainingTime, isPast } =
+                        calculateRemainingTimess(
+                          ticket.createdAt,
+                          ticket.TicketResTimeInMinutes
+                        );
+                      // const timeUpdate =
+                      //   timeUpdates.find(
+                      //     (update) => update.ticketID === ticket.TicketID
+                      //   ) || {};
+                      // const { remainingTime, isPast } =
+                      //   calculateRemainingTimess(
+                      //     ticket.createdAt,
+                      //     ticket.TicketResTimeInMinutes
+                      //   );
+                      return (
+                        <tr
+                          key={ticket.TicketID}
+                          onClick={() => handleTicketClick(ticket)}
+                          className={`cursor-pointer ${
+                            selectedTicket === ticket ? "selected-row" : ""
+                          }`}
+                        >
+                          <td>{ticket.TicketID}</td>
+                          <td>{ticket.TicketType}</td>
+                          <td>{formatDateTime(ticket.createdAt)}</td>
+                          <td>
+                            <span className={getStatusClass(ticket.Status)}>
+                              {ticket.Status}
+                            </span>
+                          </td>
+                          <td>
+                            {ticket.LeadId
+                              ? ticket.LeadId
+                              : ticket.from_User.user_reg_no}
+                          </td>
+                          <td>{ticket.Querycategory}</td>
+                          <td>{ticket.QuerySubcategory}</td>
+                          <td>{ticket.from_User.location}</td>
+                          <td>{ticket.from_User.user_Name}</td>
+                          <td>{ticket.from_User.Department.DepartmentName}</td>
+                          <td>{ticket.TicketResTimeInMinutes}</td>
+                          {/* <td style={{ color: isPast ? "red" : "green" }}>
+                            {isPast
+                              ? `${Math.abs(
+                                  timeUpdate.remainingTime || remainingTime
+                                )} min overdue`
+                              : `${
+                                  timeUpdate.remainingTime || remainingTime
+                                } min remaining`}
+                          </td> */}
+                          <td style={{ color: isPast ? "red" : "green" }}>
+                            {timeUpdate.remainingTime || remainingTime}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -548,8 +623,8 @@ function DepartmentsTickets() {
         {selectedTicket ? (
           <>
             <div className="sm:w-full">
-              <div className="bg-white rounded-lg shadow-md p-6 overflow-y-auto w-full">
-                <div className="flex bg-white justify-between">
+              <div className="bg-white rounded-lg shadow-md p-1 ms-2 overflow-y-auto w-full">
+                <div className="flex bg-white justify-between border-2 p-1">
                   {selectedTicket.claim_User_Id ? (
                     <>
                       <button className="bg-green-500 hover:bg-grrn-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">

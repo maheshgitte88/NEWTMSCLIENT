@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       {" "}
-      <div className="container mx-auto p-1 flex flex-col sm:flex-row text-sm">
+      <div className="container mx-auto flex flex-col sm:flex-row text-sm">
         <div className="sm:w-full">
           {decoded.DepartmentID === 2 ? (
             <>

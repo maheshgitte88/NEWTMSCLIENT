@@ -238,51 +238,51 @@ function AdminTicket() {
   };
   const renderTable = (tickets) => (
     <div className="table-container">
-    <table
-      className={`custom-table ${selectedTicket ? "selected-table" : ""}`}
-    >
-      <thead>
-        <tr>
-          <th>Ticket ID</th>
-          <th>Ticket Type</th>
-          <th>Ticket Query</th>
-          <th>Status</th>
-          <th>Description</th>
-          <th>Resolution Description</th>
-          <th>Close Description</th>
-          <th>Resolution Feedback</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tickets.map((ticket) => (
-          <tr
-            key={ticket.TicketID}
-            onClick={() => handleTicketClick(ticket)}
-            className={`cursor-pointer ${
-              selectedTicket === ticket ? "selected-row" : ""
-            }`}
-          >
-            <td>{ticket.TicketID}</td>
-            <td>{ticket.TicketType}</td>
-            <td>{ticket.TicketQuery}</td>
-            <td>
-              <span className={getStatusClass(ticket.Status)}>
-                {ticket.Status}
-              </span>
-            </td>
-            <td>{ticket.Description}</td>
-            <td>{ticket.ResolutionDescription}</td>
-            <td>{ticket.CloseDescription}</td>
-            <td>{ticket.ResolutionFeedback}</td>
-            <td>{new Date(ticket.createdAt).toLocaleString()}</td>
-            <td>{new Date(ticket.updatedAt).toLocaleString()}</td>
+      <table
+        className={`custom-table ${selectedTicket ? "selected-table" : ""}`}
+      >
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Ticket Type</th>
+            <th>Ticket Query</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Resolution Description</th>
+            <th>Close Description</th>
+            <th>Resolution Feedback</th>
+            <th>Created At</th>
+            <th>Updated At</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {tickets.map((ticket) => (
+            <tr
+              key={ticket.TicketID}
+              onClick={() => handleTicketClick(ticket)}
+              className={`cursor-pointer ${
+                selectedTicket === ticket ? "selected-row" : ""
+              }`}
+            >
+              <td>{ticket.TicketID}</td>
+              <td>{ticket.TicketType}</td>
+              <td>{ticket.TicketQuery}</td>
+              <td>
+                <span className={getStatusClass(ticket.Status)}>
+                  {ticket.Status}
+                </span>
+              </td>
+              <td>{ticket.Description}</td>
+              <td>{ticket.ResolutionDescription}</td>
+              <td>{ticket.CloseDescription}</td>
+              <td>{ticket.ResolutionFeedback}</td>
+              <td>{new Date(ticket.createdAt).toLocaleString()}</td>
+              <td>{new Date(ticket.updatedAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   return (
@@ -349,12 +349,14 @@ function AdminTicket() {
                   </thead>
                   <tbody>
                     {paginatedTickets.map((ticket) => (
+                      
                       <tr
                         key={ticket.TicketID}
                         onClick={() => handleTicketClick(ticket)}
                         className={`cursor-pointer ${
                           selectedTicket === ticket ? "selected-row" : ""
                         }`}
+                        
                       >
                         <td>{ticket.TicketID}</td>
                         <td>{ticket.TicketType}</td>
@@ -537,195 +539,202 @@ function AdminTicket() {
         {selectedTicket ? (
           <>
             <div className="sm:w-full ms-1">
-              <div className="flex bg-white justify-between">
-                {selectedTicket.claim_User_Id ? (
-                  <>
-                    <button className="bg-green-500 hover:bg-grrn-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
-                      Claimed
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <div className="ms-1 text-blue-600">
-                      <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onClick={() =>
-                          handleClaimTicket(selectedTicket.TicketID)
-                        }
-                      >
-                        Claim
-                      </button>{" "}
-                    </div>
-                  </>
-                )}
+              <div className="bg-white rounded-lg shadow-md p-1 ms-2 overflow-y-auto w-full">
+                <div className="flex bg-white justify-between border-2 p-1">
+                  {selectedTicket.claim_User_Id ? (
+                    <>
+                      <button className="bg-green-500 hover:bg-grrn-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Claimed
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <div className="ms-1 text-blue-600">
+                        <button
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
+                          onClick={() =>
+                            handleClaimTicket(selectedTicket.TicketID)
+                          }
+                        >
+                          Claim
+                        </button>{" "}
+                      </div>
+                    </>
+                  )}
 
-                <div className="text-blue-600">
-                  Ticket Id: {selectedTicket.TicketID}
+                  <div className="text-blue-600">
+                    Ticket Id: {selectedTicket.TicketID}
+                  </div>
+                  <button onClick={() => handleTicketClick()} type="button">
+                    ✖
+                  </button>
                 </div>
-                <button onClick={() => handleTicketClick()} type="button">
-                  ✖
-                </button>
-              </div>
 
-              <div className="bg-white shadow-md p-6 overflow-y-auto w-full custom-scrollbar">
-                {/* <p className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">
+                <div className="bg-white shadow-md p-6 overflow-y-auto w-full custom-scrollbar">
+                  {/* <p className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">
                   Ticket Details
                 </p> */}
-                <div className="mb-4">
-                  <div className="flex justify-between">
-                    <p className="text-gray-700 mb-2">
-                      <b>Status:</b>{" "}
-                      <span className={getStatusClass(selectedTicket.Status)}>
-                        {selectedTicket.Status}
-                      </span>
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <b>Reg No:</b>{" "}
-                      <span>{selectedTicket.from_User.user_reg_no}</span>
-                    </p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-700 mb-2">
-                      <b>Time limit:</b> {selectedTicket.TicketResTimeInMinutes}{" "}
-                      minutes
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <b>Received Time:</b>{" "}
-                      <span>{formatDateTime(selectedTicket.createdAt)}</span>
-                    </p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-700 mb-2">
-                      <b>Email:</b>{" "}
-                      <span>{selectedTicket.from_User.user_Email}</span>
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <b>Mobile:</b>{" "}
-                      <span>{selectedTicket.from_User.user_Mobile}</span>
-                    </p>
-                  </div>
-                  <p className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
+                  <div className="mb-4">
                     <div className="flex justify-between">
-                      <span>
-                        <b>From:</b> {selectedTicket.from_User.user_Name}
-                      </span>
-                      <span>
-                        <b>Department:</b>{" "}
-                        {selectedTicket.from_User.Department.DepartmentName}
-                      </span>
-                      <span>
-                        <b>LeadId:</b> {selectedTicket.LeadId}
-                      </span>
+                      <p className="text-gray-700 mb-2">
+                        <b>Status:</b>{" "}
+                        <span className={getStatusClass(selectedTicket.Status)}>
+                          {selectedTicket.Status}
+                        </span>
+                      </p>
+                      <p className="text-gray-700 mb-2">
+                        <b>Reg No:</b>{" "}
+                        <span>{selectedTicket.from_User.user_reg_no}</span>
+                      </p>
                     </div>
-                    <br />
-                    <div className="border-2 py-5 px-1">
-                      {selectedTicket.Description}
+                    <div className="flex justify-between">
+                      <p className="text-gray-700 mb-2">
+                        <b>Time limit:</b>{" "}
+                        {selectedTicket.TicketResTimeInMinutes} minutes
+                      </p>
+                      <p className="text-gray-700 mb-2">
+                        <b>Received Time:</b>{" "}
+                        <span>{formatDateTime(selectedTicket.createdAt)}</span>
+                      </p>
                     </div>
-                    <br />
-                    <b>Time & Date:</b>{" "}
-                    {formatDateTime(selectedTicket.createdAt)}
-                    {!selectedTicket.ResolutionDescription ? (
-                      <div className="border-t-4 border-sky-500 mt-2 pt-2">
-                        <Resolution TicketData={selectedTicket} />
+                    <div className="flex justify-between">
+                      <p className="text-gray-700 mb-2">
+                        <b>Email:</b>{" "}
+                        <span>{selectedTicket.from_User.user_Email}</span>
+                      </p>
+                      <p className="text-gray-700 mb-2">
+                        <b>Mobile:</b>{" "}
+                        <span>{selectedTicket.from_User.user_Mobile}</span>
+                      </p>
+                    </div>
+                    <p className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
+                      <div className="flex justify-between">
+                        <span>
+                          <b>From:</b> {selectedTicket.from_User.user_Name}
+                        </span>
+                        <span>
+                          <b>Department:</b>{" "}
+                          {selectedTicket.from_User.Department.DepartmentName}
+                        </span>
+                        <span>
+                          <b>LeadId:</b> {selectedTicket.LeadId}
+                        </span>
                       </div>
-                    ) : (
-                      <></>
-                    )}
-                  </p>
-                  {selectedTicket.claim_User &&
-                    selectedTicket.ResolutionDescription && (
-                      <div className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
-                        <div className="flex justify-between">
-                          <span>
-                            <b>Ticket From:</b>{" "}
-                            {selectedTicket.claim_User.user_Name}
-                          </span>
-                          <span>
-                            <b>Department:</b>{" "}
-                            {
-                              selectedTicket.claim_User.Department
-                                .DepartmentName
-                            }
-                          </span>
-                        </div>
-                        <br />
-                        <div className="border-2 py-5 px-1">
-                          {selectedTicket.ResolutionDescription}
-                        </div>
-                        <br />
-                        <b>Time & Date:</b>{" "}
-                        {formatDateTime(selectedTicket.Resolution_Timestamp)}
+                      <br />
+                      <div className="border-2 py-5 px-1">
+                        {selectedTicket.Description}
                       </div>
-                    )}
-                  {selectedTicket.TransferredToDepartment && (
-                    <div className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
-                      {selectedTicket.TransferDescription ? (
-                        <>
+                      <br />
+                      <b>Time & Date:</b>{" "}
+                      {formatDateTime(selectedTicket.createdAt)}
+                      {!selectedTicket.ResolutionDescription ? (
+                        <div className="border-t-4 border-sky-500 mt-2 pt-2">
+                          <Resolution TicketData={selectedTicket} />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </p>
+                    {selectedTicket.claim_User &&
+                      selectedTicket.ResolutionDescription && (
+                        <div className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
                           <div className="flex justify-between">
                             <span>
-                              <b>Transfer To :</b>{" "}
-                              {
-                                selectedTicket.transferredClaimUser.Department
-                                  .DepartmentName
-                              }
+                              <b>Ticket From:</b>{" "}
+                              {selectedTicket.claim_User.user_Name}
                             </span>
                             <span>
-                              <b>Admin:</b>{" "}
-                              {selectedTicket.transferredClaimUser.user_Name}
-                            </span>
-                            <span>
-                              <b>From:</b>{" "}
+                              <b>Department:</b>{" "}
                               {
-                                selectedTicket.transferredClaimUser.Department
+                                selectedTicket.claim_User.Department
                                   .DepartmentName
                               }
                             </span>
                           </div>
                           <br />
                           <div className="border-2 py-5 px-1">
-                            {selectedTicket.TransferDescription}
+                            {selectedTicket.ResolutionDescription}
                           </div>
                           <br />
                           <b>Time & Date:</b>{" "}
                           {formatDateTime(selectedTicket.Resolution_Timestamp)}
-                        </>
-                      ) : (
-                        <>
-                          <h1>Wait for reply From Respected Department</h1>
-                        </>
+                        </div>
                       )}
-                    </div>
-                  )}
-                  {selectedTicket.CloseDescription &&
-                    selectedTicket.Status === "Closed" && (
+                    {selectedTicket.TransferredToDepartment && (
                       <div className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
-                        <div className="flex justify-between">
-                          <span>
-                            <b>Closed with:</b>{" "}
-                            {selectedTicket.from_User.user_Name}
-                          </span>
-                          <span>
-                            <b>Department:</b>{" "}
-                            {selectedTicket.from_User.Department.DepartmentName}
-                          </span>
-                        </div>
-                        <br />
-                        <div className="border-2 py-5 px-1">
-                          {selectedTicket.CloseDescription}
-                        </div>
-                        <br />
-                        <div className="flex justify-between">
-                          <span>
+                        {selectedTicket.TransferDescription ? (
+                          <>
+                            <div className="flex justify-between">
+                              <span>
+                                <b>Transfer To :</b>{" "}
+                                {
+                                  selectedTicket.transferredClaimUser.Department
+                                    .DepartmentName
+                                }
+                              </span>
+                              <span>
+                                <b>Admin:</b>{" "}
+                                {selectedTicket.transferredClaimUser.user_Name}
+                              </span>
+                              <span>
+                                <b>From:</b>{" "}
+                                {
+                                  selectedTicket.transferredClaimUser.Department
+                                    .DepartmentName
+                                }
+                              </span>
+                            </div>
+                            <br />
+                            <div className="border-2 py-5 px-1">
+                              {selectedTicket.TransferDescription}
+                            </div>
+                            <br />
                             <b>Time & Date:</b>{" "}
-                            {formatDateTime(selectedTicket.closed_Timestamp)}
-                          </span>
-                          <span>
-                            <b>Rating:</b> {selectedTicket.ResolutionFeedback}
-                          </span>
-                        </div>
+                            {formatDateTime(
+                              selectedTicket.Resolution_Timestamp
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <h1>Wait for reply From Respected Department</h1>
+                          </>
+                        )}
                       </div>
                     )}
+                    {selectedTicket.CloseDescription &&
+                      selectedTicket.Status === "Closed" && (
+                        <div className="text-gray-700 mb-4 border border-indigo-600 p-4 rounded-md">
+                          <div className="flex justify-between">
+                            <span>
+                              <b>Closed with:</b>{" "}
+                              {selectedTicket.from_User.user_Name}
+                            </span>
+                            <span>
+                              <b>Department:</b>{" "}
+                              {
+                                selectedTicket.from_User.Department
+                                  .DepartmentName
+                              }
+                            </span>
+                          </div>
+                          <br />
+                          <div className="border-2 py-5 px-1">
+                            {selectedTicket.CloseDescription}
+                          </div>
+                          <br />
+                          <div className="flex justify-between">
+                            <span>
+                              <b>Time & Date:</b>{" "}
+                              {formatDateTime(selectedTicket.closed_Timestamp)}
+                            </span>
+                            <span>
+                              <b>Rating:</b> {selectedTicket.ResolutionFeedback}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                  </div>
                 </div>
               </div>
             </div>
