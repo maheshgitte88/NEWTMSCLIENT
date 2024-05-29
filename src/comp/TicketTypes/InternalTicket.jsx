@@ -12,7 +12,7 @@ import Close from "../Tables/Reply/Close";
 const currentTime = new Date();
 const currentDay = new Date();
 function InternalTicket() {
-  const socket = useMemo(() => io("http://65.1.54.123:2000"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -54,7 +54,7 @@ function InternalTicket() {
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          "http://65.1.54.123:2000/api/all-hierarchy"
+          "https://13.235.240.117:2000/api/all-hierarchy"
         );
         setDepartments(response.data);
       } catch (error) {
@@ -89,7 +89,7 @@ function InternalTicket() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://65.1.54.123:2000/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

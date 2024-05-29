@@ -9,7 +9,7 @@ import {
 } from "../../../reduxToolkit/features/AdminSlice";
 import { DepSubHierachy } from "../../../reduxToolkit/features/QueryDataSlices";
 function Resolution({ TicketData }) {
-  const socket = useMemo(() => io("http://65.1.54.123:2000"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -59,7 +59,7 @@ function Resolution({ TicketData }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://65.1.54.123:2000/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

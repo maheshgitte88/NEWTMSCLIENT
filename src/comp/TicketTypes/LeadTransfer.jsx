@@ -13,7 +13,7 @@ import Close from "../Tables/Reply/Close";
 const currentTime = new Date();
 const currentDay = new Date();
 function LeadTransfer() {
-  const socket = useMemo(() => io("http://65.1.54.123:2000"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -57,7 +57,7 @@ function LeadTransfer() {
     const fetchQueryData = async () => {
       try {
         const response = await axios.get(
-          "http://65.1.54.123:2000/api/mis-hierarchy"
+          "https://13.235.240.117:2000/api/mis-hierarchy"
         );
         setQueryCategories(response.data);
       } catch (error) {
@@ -72,7 +72,7 @@ function LeadTransfer() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://65.1.54.123:2000/api/all-hierarchy"
+          "https://13.235.240.117:2000/api/all-hierarchy"
         ); // Adjust API endpoint as needed
         setAllDepartments(response.data);
       } catch (error) {
@@ -119,7 +119,7 @@ function LeadTransfer() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://65.1.54.123:2000/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {
@@ -341,7 +341,7 @@ function LeadTransfer() {
   const fetchClosedTickets = async () => {
     try {
       const response = await axios.get(
-        `http://65.1.54.123:2000/api/Closed/tickets/${decoded.user_id}`
+        `https://13.235.240.117:2000/api/Closed/tickets/${decoded.user_id}`
       );
       setClosedTickets(response.data.tickets);
       setActiveTab("closed");
@@ -353,7 +353,7 @@ function LeadTransfer() {
   const fetchResolvedTickets = async () => {
     try {
       const response = await axios.get(
-        `http://65.1.54.123:2000/api/resolved/tickets/${decoded.user_id}`
+        `https://13.235.240.117:2000/api/resolved/tickets/${decoded.user_id}`
       );
       setResolvedTickets(response.data.tickets);
       setActiveTab("resolved");

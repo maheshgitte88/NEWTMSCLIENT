@@ -14,7 +14,7 @@ import Close from "../Tables/Reply/Close";
 const currentTime = new Date();
 const currentDay = new Date();
 function StudentTicket() {
-  const socket = useMemo(() => io("http://65.1.54.123:2000"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -70,7 +70,7 @@ function StudentTicket() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://65.1.54.123:2000/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {
@@ -200,7 +200,7 @@ function StudentTicket() {
   const fetchClosedTickets = async () => {
     try {
       const response = await axios.get(
-        `http://65.1.54.123:2000/api/Closed/tickets/${decoded.user_id}`
+        `https://13.235.240.117:2000/api/Closed/tickets/${decoded.user_id}`
       );
       setClosedTickets(response.data.tickets);
       setActiveTab("closed");
@@ -212,7 +212,7 @@ function StudentTicket() {
   const fetchResolvedTickets = async () => {
     try {
       const response = await axios.get(
-        `http://65.1.54.123:2000/api/resolved/tickets/${decoded.user_id}`
+        `https://13.235.240.117:2000/api/resolved/tickets/${decoded.user_id}`
       );
       setResolvedTickets(response.data.tickets);
       setActiveTab("resolved");

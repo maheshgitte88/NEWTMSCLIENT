@@ -30,7 +30,7 @@ function Close({ TicketData }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://65.1.54.123:2000/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

@@ -6,7 +6,7 @@ export const createTicket = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://65.1.54.123:2000/api/create-ticket",
+        "https://13.235.240.117:2000/api/create-ticket",
         data
       );
       const result = response.data;
@@ -22,7 +22,7 @@ export const updatesTickets = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://65.1.54.123:2000/api/update-ticket",
+        "https://13.235.240.117:2000/api/update-ticket",
         data
       );
       const result = response.data;
@@ -38,7 +38,7 @@ export const getAdminAssignedTicket = createAsyncThunk(
   async ({ departmentId, SubDepartmentId }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://65.1.54.123:2000/api/tickets/${departmentId}/${SubDepartmentId}`
+        `https://13.235.240.117:2000/api/tickets/${departmentId}/${SubDepartmentId}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -56,7 +56,7 @@ export const getAdminTicketFromOtherDep = createAsyncThunk(
   async ({ departmentId, SubDepartmentId }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://65.1.54.123:2000/api/trs-tickets/${departmentId}/${SubDepartmentId}`
+        `https://13.235.240.117:2000/api/trs-tickets/${departmentId}/${SubDepartmentId}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -71,7 +71,7 @@ export const getAdminTicketClaimed = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://65.1.54.123:2000/api/emp-ticket/claimed/${user_id}`
+        `https://13.235.240.117:2000/api/emp-ticket/claimed/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -88,7 +88,7 @@ export const getAdminTicketClaimed = createAsyncThunk(
 //   async ({ departmentId, SubDepartmentId, EmployeeID }, { rejectWithValue }) => {
 //     try {
 //       const res = await axios.get(
-//         `http://65.1.54.123:2000/Ticket/department/Resolved/${departmentId}/${SubDepartmentId}/${EmployeeID}`
+//         `https://13.235.240.117:2000/Ticket/department/Resolved/${departmentId}/${SubDepartmentId}/${EmployeeID}`
 //       );
 //       const resData = res.data.tickets;
 //       return resData;
@@ -103,7 +103,7 @@ export const getAdminTicketClaimed = createAsyncThunk(
 //   async ({ departmentId, SubDepartmentId, EmployeeID }, { rejectWithValue }) => {
 //     try {
 //       const res = await axios.get(
-//         `http://65.1.54.123:2000/Ticket/department/Closed/${departmentId}/${SubDepartmentId}/${EmployeeID}`
+//         `https://13.235.240.117:2000/Ticket/department/Closed/${departmentId}/${SubDepartmentId}/${EmployeeID}`
 //       );
 //       const resData = res.data.tickets;
 //       return resData;
